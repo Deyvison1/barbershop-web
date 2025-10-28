@@ -52,10 +52,13 @@
               ],
               "outputHashing": "all"
             },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
+            "dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.dev.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -66,11 +69,11 @@
             "production": {
               "buildTarget": "barbershop-web:build:production"
             },
-            "development": {
-              "buildTarget": "barbershop-web:build:development"
+            "dev": {
+              "buildTarget": "barbershop-web:build:dev"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "dev"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"
@@ -98,5 +101,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "5fd2c61f-58c2-4f68-b0a1-3e07115751f2"
   }
 }
