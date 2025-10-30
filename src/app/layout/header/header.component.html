@@ -1,0 +1,25 @@
+<!-- Header -->
+<header class="app-header p-d-flex p-ai-center p-px-3 p-py-2">
+  <h2 class="app-title">
+    <img [src]="logoPath" alt="Logo" class="drawer-logo mr-2" />
+    Barbershop
+  </h2>
+  <button
+    pButton
+    icon="pi pi-bars"
+    class="p-button-rounded p-button-outlined mobile-menu-button"
+    (click)="toggleSidebar()"
+  ></button>
+  <div class="header-spacer"></div>
+
+  <!-- Botão de perfil com menu -->
+  <p-menu #profileMenu [model]="profileItems" popup="true"></p-menu>
+  <button
+    pButton
+    type="button"
+    icon="pi pi-user"
+    class="p-button-rounded p-button-outlined profile-button"
+    label="Perfil"
+    (click)="toggleProfileMenu($event)"
+  ></button>
+</header>

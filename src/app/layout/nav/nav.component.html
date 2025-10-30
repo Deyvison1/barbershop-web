@@ -1,0 +1,38 @@
+<!-- app-nav.component.html -->
+<div class="nav-layout">
+  <!-- Header -->
+  <app-header
+    (showSideBar)="toggleSidebar()"
+    [sidebarVisible]="sidebarVisible"
+  ></app-header>
+
+  <div class="layout">
+    <!-- Sidebar para desktop -->
+    <aside class="sidebar desktop-sidebar">
+      <p-panelMenu [model]="menuItems"></p-panelMenu>
+    </aside>
+
+    <!-- Drawer para mobile -->
+    <p-drawer
+      [(visible)]="sidebarVisible"
+      [baseZIndex]="1000"
+      modal="true"
+      showHeader="false"
+      position="left"
+      class="mobile-sidebar"
+    >
+      <!-- Cabeçalho customizado com logo + botão fechar -->
+      <div class="drawer-header p-d-flex p-ai-center p-jc-between p-p-3"> 
+        <img [src]="logoPath" alt="Logo" class="drawer-logo" />
+      </div>
+
+      <!-- Menu -->
+      <p-panelMenu [model]="menuItems" routerLinkActive></p-panelMenu>
+    </p-drawer>
+
+    <!-- Conteúdo -->
+    <main class="main-content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

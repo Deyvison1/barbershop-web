@@ -13,7 +13,7 @@ export function buildPaginationParams<F>(
   let params = new HttpParams()
     .set('page', pageConfig.page.toString())
     .set('size', pageConfig.size.toString());
-
+console.log(filters)
   if (filters) {
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== '') {

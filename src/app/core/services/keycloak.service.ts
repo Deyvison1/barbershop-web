@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
 import { KeycloakDecodedToken } from '../../shared/models/keycloak-decoded-token.dto';
@@ -6,18 +7,17 @@ import { KeycloakDecodedToken } from '../../shared/models/keycloak-decoded-token
 export class KeycloakService {
   private keycloak?: Keycloak;
 
-  /** Inicializa o Keycloak e força login via redirect */
   init(): Promise<void> {
     this.keycloak = new Keycloak({
-      url: 'http://keycloak.local:8080', // Keycloak local HTTP
-      realm: 'REALM_SPRING_API',
-      clientId: 'CLIENT_SPRING',
+      url: environment.keycloakConfig.url,
+      realm: environment.keycloakConfig.realm,
+      clientId: environment.keycloakConfig.clientId,
     });
 
     return this.keycloak
       .init({
         onLoad: 'login-required',
-        checkLoginIframe: false, // evita iframe que causa erro de cookie em HTTP
+        checkLoginIframe: false,
       })
       .then((authenticated) => {
         if (!authenticated) {
@@ -26,28 +26,41 @@ export class KeycloakService {
       });
   }
 
-  /** Retorna a instância do Keycloak */
   getKeycloakInstance(): Keycloak {
     if (!this.keycloak) throw new Error('Keycloak não inicializado');
     return this.keycloak;
   }
 
-  /** Retorna o token decodificado */
   getDecodedToken(): KeycloakDecodedToken | undefined {
     return this.keycloak?.tokenParsed as KeycloakDecodedToken;
   }
 
-  /** Roles do client */
   getClientRoles(clientId: string): string[] {
     return this.getDecodedToken()?.resource_access?.[clientId]?.roles || [];
   }
 
-  /** Roles do realm */
+  async getToken(): Promise<string> {
+    if (!this.keycloak) {
+      throw new Error('Keycloak não inicializado');
+    }
+
+    // Atualiza token se faltar menos de 30 segundos
+    return new Promise<string>((resolve, reject) => {
+      this.keycloak
+        .updateToken(30)
+        .then((refreshed) => {
+          resolve(this.keycloak.token!);
+        })
+        .catch(() => {
+          reject(new Error('Falha ao atualizar token'));
+        });
+    });
+  }
+
   getRealmRoles(): string[] {
     return this.getDecodedToken()?.realm_access?.roles || [];
   }
 
-  /** Verifica se o usuário tem algum role */
   hasAnyRole(roles: string[], clientId?: string): boolean {
     const userRoles = clientId
       ? this.getClientRoles(clientId)
@@ -55,12 +68,10 @@ export class KeycloakService {
     return roles.some((role) => userRoles.includes(role));
   }
 
-  /** Logout */
   logout(): void {
-    this.keycloak?.logout({ redirectUri: window.location.origin });
+    this.keycloak?.logout({ redirectUri: globalThis.location.origin });
   }
 
-  /** Verifica se está logado */
   isLoggedIn(): boolean {
     return !!this.keycloak?.token;
   }

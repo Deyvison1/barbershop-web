@@ -12,7 +12,7 @@ import { buildPaginationParams } from '../../shared/utils/http-utils';
   providedIn: 'root',
 })
 export class HaircutService extends HttpService {
-  url: string = environment.apiUrl;
+  url: string = environment.apiUrl.concat('/haircut');
 
   findAll(
     pageConfig: PageConfigDTO<HaircutFilterDTO>
@@ -38,4 +38,5 @@ export class HaircutService extends HttpService {
   remove(id: string): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
+
 }

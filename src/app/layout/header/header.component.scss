@@ -1,0 +1,52 @@
+/* Header */
+.app-header {
+  background-color: #1976d2;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+
+  .app-title {
+    margin: 0;
+  }
+
+  .header-spacer {
+    flex: 1;
+  }
+
+  .profile-button {
+    color: white;
+    border-color: white;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+  }
+}
+
+.drawer-logo {
+  height: 40px; /* altura fixa */
+  width: auto; /* mantém proporção */
+}
+
+/* Botão de sidebar (hamburguer) */
+.mobile-menu-button {
+  display: none; /* esconde por padrão */
+  margin-left: 1rem;
+}
+
+/* Quando a tela for menor que 768px, mostra o botão */
+@media (max-width: 768px) {
+  .mobile-menu-button {
+    display: inline-flex;
+  }
+  .drawer-logo {
+    display: none;
+  }
+}
+
+::ng-deep .p-menu {
+  right: 0 !important; /* força o menu a ficar dentro da tela */
+  left: auto !important;
+  transform: translateX(-04px) !important; /* leve ajuste pra dentro */
+}

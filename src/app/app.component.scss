@@ -1,0 +1,20 @@
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0; /* remove espaçamento inesperado */
+  padding: 0;
+}
+
+/* O nav ocupa todo o espaço entre topo e footer */
+app-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* permite que overflow funcione corretamente */
+}
+
+/* Footer sempre no fim */
+app-footer {
+  flex-shrink: 0;
+}

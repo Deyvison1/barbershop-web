@@ -1,0 +1,67 @@
+<app-haircut-filter (searchEvent)="search($event)" (clearEvent)="clear()"></app-haircut-filter>
+
+@if(showTable) {
+<h2>Lista de Cortes</h2>
+
+<p-table
+  [value]="haircuts"
+  [tableStyle]="{ 'min-width': '60rem' }"
+  [lazy]="true"
+  (onLazyLoad)="loadData($event)"
+  paginatorDropdownAppendTo="body"
+  [rows]="pageConfig.size"
+  [showCurrentPageReport]="true"
+  currentPageReportTemplate="{first} a {last} de {totalRecords} cortes."
+  [rowsPerPageOptions]="[5, 10, 25, 50]"
+  [totalRecords]="totalRecords"
+  [value]="haircuts"
+  [paginator]="true"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th id="images">Imagem</th>
+      <th id="name">Nome</th>
+      <th id="price">Preço</th>
+      <th id="time">Tempo medio</th>
+      <th id="createdDate">Data da Criação</th>
+      <th id="actions">Ações</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-haircut>
+    <tr>
+      <td>
+        @if(haircut.images.length) {
+        <p-image
+          [src]="getUriImage(haircut)"
+          alt="Image"
+          width="90"
+          [preview]="true"
+        />
+        } @else {
+        <span>Sem Imagem</span>
+        }
+      </td>
+      <td>{{ haircut.name }}</td>
+      <td>{{ haircut.price | currency : "BRL" }}</td>
+      <td>{{ haircut.time == null ? "" : haircut.time + " min" }}</td>
+      <td>{{ haircut.createdDate }}</td>
+      <td>
+        <p-button
+          icon="pi pi-pencil"
+          severity="secondary"
+          (onClick)="navigationToEdit(haircut)"
+          size="small"
+        />
+        <p-button
+          icon="pi pi-times"
+          size="small"
+          severity="danger"
+          (onClick)="confirm(haircut.id, haircut.name)"
+        />
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+}
+
+<p-confirmdialog />

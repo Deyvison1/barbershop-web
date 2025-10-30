@@ -1,0 +1,21 @@
+<div class="p-2">
+  
+  @if (control.touched) { @if (control.hasError('required')) {
+  <span class="invalid-control">Campo obrigatório</span>
+  } @else if (control.hasError('minlength')) {
+  <span class="invalid-control">
+    Mínimo {{ control.errors!["minlength"].requiredLength }} caracteres
+  </span>
+  } @else if (control.hasError('maxlength')) {
+  <span class="invalid-control">
+    Máximo {{ control.errors!["maxlength"].requiredLength }} caracteres
+  </span>
+  } @else if (control.hasError('email')) {
+  <span class="invalid-control">E-mail inválido</span>
+  } @else if(control.hasError('notZero')) {
+  <span class="invalid-control">Valor não pode ser 0.</span>
+  } @else if(control.hasError('notNegative')) {
+  <span class="invalid-control">Valor não pode ser negativo.</span>
+  }}
+
+</div>

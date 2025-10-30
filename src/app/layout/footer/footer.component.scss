@@ -1,0 +1,24 @@
+.app-footer {
+  background-color: #1976d2;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+
+  .footer-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  .social-buttons {
+    button {
+      color: white;
+      border: none;
+
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+    }
+  }
+}
