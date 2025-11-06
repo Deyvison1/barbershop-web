@@ -1,5 +1,5 @@
 import { getPagePrimeng } from './../../../shared/utils/page-primeng.utils';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { ImageModule } from 'primeng/image';
@@ -16,6 +16,7 @@ import { ConfirmDialog } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { HaircutFilterComponent } from '../haircut-filter/haircut-filter.component';
 import { HaircutFilterDTO } from '../../../shared/models/haircut-filter.dto';
+import { CardModule } from "primeng/card";
 
 @Component({
   selector: 'app-haircut-list',
@@ -29,11 +30,12 @@ import { HaircutFilterDTO } from '../../../shared/models/haircut-filter.dto';
     ToastModule,
     ConfirmDialog,
     HaircutFilterComponent,
-  ],
+    CardModule
+],
   templateUrl: './haircut-list.component.html',
   styleUrls: ['./haircut-list.component.scss'],
 })
-export class HaircutListComponent implements OnInit {
+export class HaircutListComponent {
   private readonly haircutService = inject(HaircutService);
   private readonly confirmationService: ConfirmationService =
     inject(ConfirmationService);
@@ -44,10 +46,6 @@ export class HaircutListComponent implements OnInit {
   haircuts: HaircutDTO[] = [];
   totalRecords = 0;
   showTable: boolean = false;
-
-  ngOnInit() {
-    this.loadData({ first: 0, rows: 5 });
-  }
 
   confirm(id: string, name: string) {
     const nameBold = `<strong>${name}</strong>`;
@@ -100,6 +98,7 @@ export class HaircutListComponent implements OnInit {
 
   clear() {
     this.showTable = false;
+    this.haircuts = [];
   }
 
   search(dto: HaircutFilterDTO) {

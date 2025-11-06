@@ -1,0 +1,64 @@
+<p-card>
+  <app-barber-filter (clearEvent)="clear()" (searchEvent)="search($event)"></app-barber-filter>
+
+  @if(showTable) {
+
+  <h2>Lista de Cortes</h2>
+
+  <p-table
+    [tableStyle]="{ 'min-width': '60rem' }"
+    [lazy]="true"
+    (onLazyLoad)="loadData($event)"
+    paginatorDropdownAppendTo="body"
+    [rows]="pageConfig.size"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="{first} a {last} de {totalRecords} cortes."
+    [rowsPerPageOptions]="[5, 10, 25, 50]"
+    [totalRecords]="totalRecords"
+    [value]="barbers"
+    [paginator]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th id="images">Nome</th>
+        <th id="createdDate">Data Da Criação</th>
+        <th id="specialties">Especialidades</th>
+        <th id="actions">Ações</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-barber>
+      <tr>
+        <td>{{ barber.name }}</td>
+        <td>{{ barber.createdDate }}</td>
+        <td>
+          <p-button
+            icon="pi pi-list-check"
+            severity="info"
+            [badge]="barber.specialties.length"
+            [pTooltip]="getSpecialties(barber.specialties)"
+            size="small"
+          />
+        </td>
+        <td>
+          <p-buttongroup>
+            <p-button
+              icon="pi pi-pencil"
+              severity="secondary"
+              size="small"
+              (onClick)="navigationToEdit(barber.id)"
+            />
+            <p-button
+              icon="pi pi-times"
+              size="small"
+              severity="danger"
+              (onClick)="confirm(barber.id, barber.name)"
+            />
+          </p-buttongroup>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  }
+</p-card>
+
+<p-confirmdialog />

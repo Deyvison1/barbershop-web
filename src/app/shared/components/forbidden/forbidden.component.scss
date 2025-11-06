@@ -1,0 +1,17 @@
+mat-card {
+  max-width: 500px;
+  border-radius: 12px;
+  background-color: #fff;
+
+  h2 {
+    font-weight: 600;
+  }
+
+  p {
+    color: #555;
+  }
+
+  button {
+    min-width: 180px;
+  }
+}

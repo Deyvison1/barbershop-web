@@ -1,10 +1,10 @@
-<app-haircut-filter (searchEvent)="search($event)" (clearEvent)="clear()"></app-haircut-filter>
+<p-card>
+  <app-haircut-filter (searchEvent)="search($event)" (clearEvent)="clear()"></app-haircut-filter>
 
 @if(showTable) {
 <h2>Lista de Cortes</h2>
 
 <p-table
-  [value]="haircuts"
   [tableStyle]="{ 'min-width': '60rem' }"
   [lazy]="true"
   (onLazyLoad)="loadData($event)"
@@ -65,3 +65,5 @@
 }
 
 <p-confirmdialog />
+
+</p-card>

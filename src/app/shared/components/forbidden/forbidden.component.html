@@ -1,0 +1,18 @@
+<p-card styleClass="text-center mt-4">
+  <ng-template pTemplate="header" class="mt-5">
+    <h2 class="text-danger mb-0">Acesso Negado</h2>
+  </ng-template>
+
+  <p class="fs-5 mb-4">
+    Você não tem permissão para acessar esta página/recurso.
+  </p>
+
+  <p-button
+    label="Logar novamente"
+    icon="pi pi-lock"
+    severity="danger"
+    class="d-flex align-items-center mx-auto px-4"
+    pTooltip="Fazer login novamente"
+    (onClick)="logout()"
+  ></p-button>
+</p-card>

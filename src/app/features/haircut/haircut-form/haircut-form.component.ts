@@ -28,6 +28,8 @@ import { DatePickerModule } from 'primeng/datepicker';
 import { HaircutImageDTO } from '../../../shared/models/haircut-image.dto';
 import { BaseImageDTO } from '../../../shared/models/base/base-image.dto';
 import { converter } from '../../../shared/utils/image-converter.util';
+import { HttpErrorResponse } from '@angular/common/http';
+import { CardModule } from "primeng/card";
 
 @Component({
   selector: 'app-haircut-form',
@@ -45,7 +47,8 @@ import { converter } from '../../../shared/utils/image-converter.util';
     FileUploadModule,
     GalleriaModule,
     DatePickerModule,
-  ],
+    CardModule
+],
   templateUrl: './haircut-form.component.html',
   styleUrl: './haircut-form.component.scss',
 })
@@ -166,8 +169,9 @@ export class HaircutFormComponent implements OnInit {
           'Imagem enviada.'
         );
       },
-      error: (err) =>
-        this.toastr.showErro(this.operationMessages.ERRO, err.error?.message),
+      error: (err: HttpErrorResponse) => {
+        this.toastr.showErro(this.operationMessages.ERRO, err.error.message);
+      },
     });
   }
 

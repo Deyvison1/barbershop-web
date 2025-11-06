@@ -9,6 +9,9 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { DrawerModule } from 'primeng/drawer';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
+import { KeycloakService } from '../../core/services/keycloak.service';
+import { environment } from '../../../environments/environment';
+import { MenuDTO } from '../../shared/models/menu.dto';
 
 @Component({
   selector: 'app-nav',
@@ -25,16 +28,18 @@ import { filter } from 'rxjs';
 })
 export class NavComponent implements OnInit {
   private readonly menuService: MenuService = inject(MenuService);
+  private readonly keycloakService: KeycloakService = inject(KeycloakService);
   private readonly router: Router = inject(Router);
+  private readonly clientId: string = environment.keycloakConfig.clientId;
   @ViewChild('profileMenu') profileMenu: Menu;
   sidebarVisible: boolean = false;
   logoPath = 'assets/logo.png';
-  menuItems: MenuItem[] = [];
+  menuItems: MenuDTO[] = [];
+  private readonly roles: string[] = ['ADMIN'];
 
   ngOnInit(): void {
     this.initMenu();
 
-    // Detecta mudanças de rota
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -44,10 +49,32 @@ export class NavComponent implements OnInit {
 
   private initMenu() {
     this.menuService.findAll().subscribe({
-      next: (resp) => {
-        this.menuItems = resp;
+      next: (resp: MenuDTO[]) => {
+        this.menuItems = this.filterMenuByRoles(resp);
       },
     });
+  }
+  private filterMenuByRoles(menu: MenuDTO[]): MenuDTO[] {
+    return menu
+      .map((item) => {
+        const filteredItems = item.items
+          ? this.filterMenuByRoles(item.items)
+          : [];
+
+        const hasRole =
+          !item.roles || item.roles.length === 0
+            ? true
+            : this.keycloakService.hasAnyRole(item.roles);
+
+        if (hasRole || filteredItems.length > 0) {
+          return {
+            ...item,
+            items: filteredItems,
+          };
+        }
+        return null;
+      })
+      .filter((x): x is MenuDTO => x !== null);
   }
 
   private expandActiveRoute() {
